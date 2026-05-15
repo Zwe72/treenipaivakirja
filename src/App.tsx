@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "./services/firebaseConfig";
 import { logout } from "./services/authService";
+import Exercises from "./pages/Exercises";
 
 function App() {
   const [trainings, setTrainings] = useState<Training[]>([])
@@ -51,6 +52,7 @@ function App() {
         {user ? (
           <>
             <Link to="/trainings">Treenit</Link> |{" "}
+            <Link to="/exercises">Exercises</Link> |{" "}
             <Link to="/add">Lisää</Link> |{" "}
 
             <button onClick={handleLogout}>
@@ -77,7 +79,15 @@ function App() {
           <ProtectedRoute isAuthenticated={!!user}>
             <AddTraining addTraining={addTraining} />
         </ProtectedRoute>
-          }
+        }
+        />
+
+        <Route path="/exercises"
+        element={
+          <ProtectedRoute isAuthenticated={!!user}>
+            <Exercises />
+          </ProtectedRoute>
+        }
         />
 
         <Route path="/login" element={<Login />} />

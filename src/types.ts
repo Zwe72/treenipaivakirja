@@ -5,4 +5,14 @@ export type Training = {
     reps: number;
     weight?: number;
     date: string;
+};
+
+export interface Exercise {
+    id: number;
+
+    translations: {
+        name: string;
+        description: string;
+        language: number;   
+    }[];
 }
