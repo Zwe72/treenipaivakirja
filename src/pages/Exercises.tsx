@@ -24,13 +24,6 @@ export default function Exercises() {
         return <p>Loading...</p>;
     }
 
-    {exercises.map((exercise) => {
-        const englishTranslation =
-        exercise.translations.find(
-            (translation) => translation.language === 2
-        );
-    })}
-
     return (
         <div>
             <h1>Exercises</h1>
