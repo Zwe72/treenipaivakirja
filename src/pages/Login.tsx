@@ -1,7 +1,10 @@
 import { useState, type FormEvent } from "react";
-import { loginWithEmail, registerWithEmail } from "../services/authService";
+import { loginWithEmail } from "../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
@@ -13,29 +16,18 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      await loginWithEmail(email, password);
+      const user = await loginWithEmail(email, password);
+
+      console.log("LOGIN ONNISTUI", user);
+
+        navigate("/trainings");
     } catch (err: unknown) {
+      console.error(err);
+      
       if (err instanceof Error) {
         setError(err.message);
       } else {
         setError("Tuntematon virhe");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleRegister = async () => {
-    setError(null);
-    setLoading(true);
-
-    try {
-      await registerWithEmail(email, password);
-    } catch (err: unknown) {
-      if (err instanceof Error)  {
-        setError(err.message);
-      } else {
-        setError("Rekisteröinti epäonnistui");
       }
     } finally {
       setLoading(false);
@@ -72,14 +64,6 @@ const LoginForm = () => {
         {loading ? "Kirjaudutaan..." : "Kirjaudu"}
       </button>
 
-      <button
-      type="button"
-      onClick={handleRegister}
-      disabled={loading}
-      style={{ marginLeft: "10px" }}
-      >
-        Luo käyttäjä
-      </button>
     </form>
   );
 };

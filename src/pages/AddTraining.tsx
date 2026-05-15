@@ -2,10 +2,10 @@ import { useState } from "react";
 import type { Training } from "../types";
 
 type Props = {
-    AddTraining: (training: Training) => void;
+    addTraining: (training: Training) => void;
 }
 
-export default function AddTraining({AddTraining}: Props) {
+export default function AddTraining({ addTraining }: Props) {
   const [exercise, setExercise] = useState("");
   const [sets, setSets] = useState("");
   const [reps, setReps] = useState("");
@@ -22,7 +22,7 @@ export default function AddTraining({AddTraining}: Props) {
       date: new Date().toISOString(),
     };
 
-    AddTraining(newTraining);
+    addTraining(newTraining);
     
     console.log("Uusi treeni:", newTraining);
 

@@ -1,7 +1,6 @@
 import {
   getAuth, 
   signInWithEmailAndPassword,
-  createUserWithEmailAndPassword,
   signOut,
   type User,
   type UserCredential
@@ -10,9 +9,7 @@ import {
 import app from "./firebaseConfig";
 
 export const auth = getAuth(app);
-/**
- * Kirjautuminen sähköposti + salasana
- */
+/* Kirjautuminen */
 export const loginWithEmail = async (
   email: string,
   password: string
@@ -25,24 +22,8 @@ export const loginWithEmail = async (
   return result.user;
 };
 
-/**
- * Käyttäjän rekisteröinti (Ei tässä tehtävässä välttämätön)
- */
-export const registerWithEmail = async (
-  email: string,
-  password: string
-): Promise<User> => {
-  const result: UserCredential = await createUserWithEmailAndPassword(
-    auth,
-    email,
-    password
-  );
-  return result.user;
-};
 
-/**
- * Kirjautuminen ulos
- */
+/* Kirjautuminen ulos */
 export const logout = async (): Promise<void> => {
   await signOut(auth);
 };
