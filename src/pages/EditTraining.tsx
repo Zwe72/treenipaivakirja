@@ -21,7 +21,7 @@ export default function EditTraining() {
                 setTraining(data);
             }
         };
-
+        
         fetchTraining();
     }, [id]);
 
