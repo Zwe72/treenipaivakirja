@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Training } from "../types";
+import { addTrainingToFirestore } from "../services/trainingService";
 
 type Props = {
     addTraining: (training: Training) => void;
@@ -10,8 +11,9 @@ export default function AddTraining({ addTraining }: Props) {
   const [sets, setSets] = useState("");
   const [reps, setReps] = useState("");
   const [weight, setWeight] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const newTraining: Training = {
@@ -22,9 +24,17 @@ export default function AddTraining({ addTraining }: Props) {
       date: new Date().toISOString(),
     };
 
+    const id = await addTrainingToFirestore(
+      newTraining
+    );
+
+    newTraining.id = id;
+
     addTraining(newTraining);
-    
-    console.log("Uusi treeni:", newTraining);
+
+    setSuccessMessage(
+      "Treeni lisätty onnistuneesti!"
+    );
 
     // tyhjennetään kentät
     setExercise("");
@@ -36,7 +46,9 @@ export default function AddTraining({ addTraining }: Props) {
   return (
     <div>
       <h2>Lisää treeni</h2>
-
+      <p style={{ color: "green" }}>
+        {successMessage}
+      </p>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Liike:</label>

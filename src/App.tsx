@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import AddTraining from "./pages/AddTraining";
 import Trainings from "./pages/Trainings";
 import Login from "./pages/Login";
+import Document from "./pages/Document";
 
 import "./App.css"
 import { useEffect, useState } from "react";
@@ -13,6 +14,8 @@ import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "./services/firebaseConfig";
 import { logout } from "./services/authService";
 import Exercises from "./pages/Exercises";
+import EditTraining from "./pages/EditTraining";
+import { getTrainingsFromFirestore } from "./services/trainingService";
 
 function App() {
   const [trainings, setTrainings] = useState<Training[]>([])
@@ -40,6 +43,17 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const fetchTrainings = async () => {
+
+      const data = await getTrainingsFromFirestore();
+
+      setTrainings(data);
+    };
+
+    fetchTrainings();
+  }, []);
+  
   if (loading) {
     return <p>Ladataan...</p>;
   }
@@ -48,6 +62,7 @@ function App() {
     <BrowserRouter>
       <nav>
         <Link to="/">Home</Link> |{" "}
+        <Link to="/document">Dokumentaatio</Link> | {" "}
 
         {user ? (
           <>
@@ -61,6 +76,7 @@ function App() {
           </>
         ) : (
         <Link to="/login">Login</Link>
+        
         )}
       </nav>
 
@@ -82,6 +98,14 @@ function App() {
         }
         />
 
+        <Route path="/edit/:id"
+        element={
+          <ProtectedRoute isAuthenticated={!!user}>
+            <EditTraining />
+          </ProtectedRoute>
+        }
+        />
+
         <Route path="/exercises"
         element={
           <ProtectedRoute isAuthenticated={!!user}>
@@ -91,6 +115,7 @@ function App() {
         />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/document" element={<Document />} />
       </Routes>
     </BrowserRouter>
   )
