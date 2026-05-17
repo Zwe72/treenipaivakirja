@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { getTrainingById, updateTrainingInFirestore } from "../services/trainingService";
 import type { Training } from "../types";
@@ -8,7 +8,7 @@ export default function EditTraining() {
 
     const { id } = useParams();
     const [training, setTraining] = useState<Training | null>(null);
-    const [sortOrder, setSortOrder] = useState("newest");
+
     useEffect(() => {
 
         const fetchTraining = async () => {
